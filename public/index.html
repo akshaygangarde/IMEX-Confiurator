@@ -24,11 +24,852 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <script src="drawflow.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+    integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="drawflow.min.css">
+  <link rel="stylesheet" type="text/css" href="beautiful.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+  <script src="https://www.w3schools.com/lib/w3.js"></script> <!-- Added by ITHENA -->
+
     <title>React App</title>
   </head>
   <body>
+    
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <header>
+      <h2>IMEX Configurator</h2>
+      
+  
+      <!--<div class="github-link"><a href="https://github.com/jerosoler/Drawflow" target="_blank"><i class="fab fa-github fa-3x"></i></a></div>-->
+      <div class="github-link"> <img src="ITHENA_Logo_v01.png" width="100" height="40" /></div>
+      <!--<div class="them-edit-link"><a href="https://jerosoler.github.io/drawflow-theme-generator/" target="_blank">🎨</a></div>-->
+    </header>
+    <div class="wrapper">
+      <div class="col">
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="organization" >
+          <!-- <i class="fab fa-facebook" style="padding-right: 10px;"></i><span> Organization</span> -->
+        <img src="Group 17.png" height="30" width="30" style="padding-top: 10px ;"/> <span style="padding-left: 10px;">  Organization</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="business_unit">
+          <img src="Group 16.png" height="30" width="30" style="padding-top: 10px ;"/> <span style="padding-left: 10px;"> Business Unit</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="plant">
+          <img src="Layer 3.png" height="30" width="30" style="padding-top: 10px ;"/> <span style="padding-left: 10px;">  Plant</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="line">
+          <img src="Group 18.png" height="30" width="30" style="padding-top: 10px ;"/> <span style="padding-left: 10px;">  Line</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="machine">
+          <img src="machine-learning.png" height="30" width="30" style="padding-top: 10px ;"/> <span style="padding-left: 10px;">  Machine</span>
+        </div>
+        <!-- <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="log">
+          <i class="fas fa-file-signature"></i><span> File Log</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="google">
+          <i class="fab fa-google-drive"></i><span> Google Drive save</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="email">
+          <i class="fas fa-at"></i><span> Email send</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="template">
+          <i class="fas fa-code"></i><span> Template</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="multiple">
+          <i class="fas fa-code-branch"></i><span> Multiple inputs/outputs</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="personalized">
+          <i class="fas fa-fill"></i><span> Personalized</span>
+        </div>
+        <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="dbclick">
+          <i class="fas fa-mouse"></i><span> DBClick!</span
+        </div> -->
+  
+        
+      </div>
+      <div class="col-right">
+        <div class="menu">
+          <ul>
+            <li onclick="editor.changeModule('Home'); changeModule(event);" class="selected">Home</li>
+            <li onclick="editor.changeModule('Other'); changeModule(event);">Other Module</li>
+          </ul>
+          
+        </div>
+        <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)" >
+  
+          <div class="btn-export" onclick="exportdata()">Export</div>
+                  
+          <div class="btn-clear" onclick="editor.clearModuleSelected(); clearHandler();">Clear</div>
+          <div class="btn-lock">
+            <i id="lock" class="fas fa-lock" onclick="editor.editor_mode='fixed'; changeMode('lock');"></i>
+            <i id="unlock" class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');"
+              style="display:none;"></i>
+          </div>
+          <div class="bar-zoom">
+            <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
+            <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
+            <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
+          </div>
+        </div>
+        <div class="input-file" style="margin-right: 75px; margin-top: 0;"><label for="file-selector">Choose a JSON file:</label> <br>
+          <input type="file" id="file-selector" accept=".json"> 
+        </div>
+        <div class="btn-import" onclick="importdata()">Import</div>
+      </div>
+    </div>
+    <script>
+      var id = document.getElementById("drawflow");
+     const editor = new Drawflow(id);
+     editor.reroute = true;
+     editor.drawflow = {"drawflow":{"Home":{"data":{"1":{"id":1,"name":"organization","data":{"name":"ORG1","description":"DESC1"},"class":"organization","html":"\n          <div onclick=\"toggleClick(event)\">\n            \n            <div id=\"nodeheader1\" class=\"title-box-node\"></div>\n            \n            <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n               Organization\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    \n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                    <div id=\"modalheader1\" class=\"title-box\"> Organization </div>\n                    <form id=\"modalForm\" class=\"box\" >\n\n                        <label for=\"name\">Name:</label>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name><br>\n                        <label for=\"description\">Description:</label>\n                        <input type=\"text\" id=\"description\" name=\"description\" df-description> <br>\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event);  changeHeader()\"\">\n                      </form>\n\n                    \n                  </div>\n                </div>\n                </div>\n\n            </div>\n        ","typenode":false,"inputs":{},"outputs":{"output_1":{"connections":[{"node":"2","output":"input_1"},{"node":"3","output":"input_1"}]}},"pos_x":392,"pos_y":43},"2":{"id":2,"name":"business_unit","data":{"name":"BU1","region":"REGION1"},"class":"business_unit","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader2\" class=\"title-box-node\" ondblclick=\"showpopup(event)\"></div>\n            <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n              Business Unit\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"nodeheader2\" class=\"title-box\"> Business Unit </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Name:</label>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name> <br>\n                        <label for=\"region\">Region:</label>\n                        <input type=\"text\" id=\"region\" name=\"region\" df-region><br>\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader()\">\n                      </form>\n\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"1","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"4","output":"input_1"}]}},"pos_x":207,"pos_y":199},"3":{"id":3,"name":"business_unit","data":{"name":"BU2","region":"REGION2"},"class":"business_unit","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader2\" class=\"title-box-node\" ondblclick=\"showpopup(event)\"></div>\n            <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n              Business Unit\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"nodeheader2\" class=\"title-box\"> Business Unit </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Name:</label>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name> <br>\n                        <label for=\"region\">Region:</label>\n                        <input type=\"text\" id=\"region\" name=\"region\" df-region><br>\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader()\">\n                      </form>\n\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"1","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"5","output":"input_1"}]}},"pos_x":618,"pos_y":194},"4":{"id":4,"name":"plant","data":{"name":"PLANT1","capacity":"10","headcount":"50"},"class":"plant","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader3\" class=\"title-box-node\" ondblclick=\"showpopup(event)\">  </div>\n            <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n               Plant\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"modalheader3\" class=\"title-box\"> Plant </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Name:</label>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name><br>\n                        <label for=\"capacity\">Capacity:</label>\n                        <input type=\"number\" id=\"capacity\" name=\"capacity\" df-capacity><br>\n                        <label for=\"count\">Head Count:</label>\n                        <input type=\"number\" id=\"count\" name=\"count\" df-headcount><br>\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader()\">\n                      </form>\n\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"2","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"6","output":"input_1"}]}},"pos_x":210,"pos_y":352},"5":{"id":5,"name":"plant","data":{"name":"PLANT2","capacity":"15","headcount":"80"},"class":"plant","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader3\" class=\"title-box-node\" ondblclick=\"showpopup(event)\">  </div>\n            <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n               Plant\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"modalheader3\" class=\"title-box\"> Plant </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Name:</label>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name><br>\n                        <label for=\"capacity\">Capacity:</label>\n                        <input type=\"number\" id=\"capacity\" name=\"capacity\" df-capacity><br>\n                        <label for=\"count\">Head Count:</label>\n                        <input type=\"number\" id=\"count\" name=\"count\" df-headcount><br>\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader()\">\n                      </form>\n\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"3","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"7","output":"input_1"}]}},"pos_x":622,"pos_y":352},"6":{"id":6,"name":"line","data":{"name":"LINE1","capacity":"20","shift":"2"},"class":"line","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader4\" class=\"title-box-node\">  </div>\n              <div class=\"box\" ondblclick=\"showpopup(event)\">\n                Line\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"modalheader4\" class=\"title-box\"> Line </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Name:</label>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name ><br>\n                        <label for=\"capacity\">Capacity:</label>\n                        <input type=\"number\" id=\"capacity\" name=\"capacity\" df-capacity><br>\n                        <label for=\"shift\">Shift Details:</label>\n                        <input type=\"number\" id=\"shift\" name=\"shift\" df-shift><br>\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader();\">\n                      </form>\n\n\n                  </div>\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"4","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"8","output":"input_1"}]}},"pos_x":215,"pos_y":504},"7":{"id":7,"name":"line","data":{"name":"LINE2","capacity":"15","shift":"3"},"class":"line","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader4\" class=\"title-box-node\">  </div>\n              <div class=\"box\" ondblclick=\"showpopup(event)\">\n                Line\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"modalheader4\" class=\"title-box\"> Line </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Name:</label>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name ><br>\n                        <label for=\"capacity\">Capacity:</label>\n                        <input type=\"number\" id=\"capacity\" name=\"capacity\" df-capacity><br>\n                        <label for=\"shift\">Shift Details:</label>\n                        <input type=\"number\" id=\"shift\" name=\"shift\" df-shift><br>\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader();\">\n                      </form>\n\n\n                  </div>\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"5","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"9","output":"input_1"}]}},"pos_x":622,"pos_y":502},"8":{"id":8,"name":"machine","data":{"name":"ROBODRILL","capacity":"80","state":"ACTIVE","totalcount":"","goodcount":"","scrapcount":"","ipaddress":"10:3:15:88","make":"MAKE1","model":"MODEL1","type":"TYPE1","protocol":"ETHERNET","network":"ETHERNET"},"class":"machine","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader5\" class=\"title-box-node\" >  </div>\n            <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n               Machine\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"modalheader5\" class=\"title-box\"> Machine </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Machine Name:</label><br>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name><br>\n\n                        <label for=\"capacity\">Machine Designed Capacity:</label>\n                        <input type=\"number\" id=\"capacity\" name=\"capacity\" df-capacity><br>\n\n                        <label for=\"state\">Machine state:</label>\n                        <input type=\"text\" id=\"state\" name=\"state\" df-state><br>\n\n                        <label for=\"ip_address\">Machine IP Address:</label>\n                        <input type=\"text\" id=\"ip_address\" name=\"ip_address\" df-ipaddress><br>\n\n                        <label for=\"make\">Machine Make:</label>\n                        <input type=\"text\" id=\"make\" name=\"make\" df-make><br>\n\n                        <label for=\"model\">Machine Model:</label>\n                        <input type=\"text\" id=\"model\" name=\"model\" df-model><br>\n\n                        <label for=\"type\">Machine Type:</label>\n                        <input type=\"text\" id=\"type\" name=\"type\" df-type><br>\n\n                        <label for=\"protocol\">Protocol used and supported by machine:</label>\n                        <input type=\"text\" id=\"protocol\" name=\"protocol\" df-protocol><br>\n\n                        <label for=\"newtowrk\">Network available to the machine:</label>\n                        <input type=\"text\" id=\"network\" name=\"newtwork\" df-network><br>\n\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader();\">\n\n                      </form>\n\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"6","input":"output_1"}]}},"outputs":{},"pos_x":215,"pos_y":648},"9":{"id":9,"name":"machine","data":{"name":"ROBOARM","capacity":"50","state":"ACTIVE","totalcount":"","goodcount":"","scrapcount":"","ipaddress":"10:3:44:13","make":"MAKE2","model":"MODEL2","type":"TYPE2","protocol":"ETHERNET","network":"ETHERNET"},"class":"machine","html":"\n          <div  onclick=\"toggleClick(event)\">\n            <div id=\"nodeheader5\" class=\"title-box-node\" >  </div>\n            <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n               Machine\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                      <div id=\"modalheader5\" class=\"title-box\"> Machine </div>\n                      <form id=\"modalForm\" class=\"box\">\n                        <label for=\"name\">Machine Name:</label><br>\n                        <input type=\"text\" id=\"name\" name=\"name\" df-name><br>\n\n                        <label for=\"capacity\">Machine Designed Capacity:</label>\n                        <input type=\"number\" id=\"capacity\" name=\"capacity\" df-capacity><br>\n\n                        <label for=\"state\">Machine state:</label>\n                        <input type=\"text\" id=\"state\" name=\"state\" df-state><br>\n\n                        <label for=\"ip_address\">Machine IP Address:</label>\n                        <input type=\"text\" id=\"ip_address\" name=\"ip_address\" df-ipaddress><br>\n\n                        <label for=\"make\">Machine Make:</label>\n                        <input type=\"text\" id=\"make\" name=\"make\" df-make><br>\n\n                        <label for=\"model\">Machine Model:</label>\n                        <input type=\"text\" id=\"model\" name=\"model\" df-model><br>\n\n                        <label for=\"type\">Machine Type:</label>\n                        <input type=\"text\" id=\"type\" name=\"type\" df-type><br>\n\n                        <label for=\"protocol\">Protocol used and supported by machine:</label>\n                        <input type=\"text\" id=\"protocol\" name=\"protocol\" df-protocol><br>\n\n                        <label for=\"newtowrk\">Network available to the machine:</label>\n                        <input type=\"text\" id=\"network\" name=\"newtwork\" df-network><br>\n\n                        <input type=\"button\" name=\"button\" value=\"SAVE\" onclick=\"closemodal(event); changeHeader();\">\n\n                      </form>\n\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ","typenode":false,"inputs":{"input_1":{"connections":[{"node":"7","input":"output_1"}]}},"outputs":{},"pos_x":624,"pos_y":649}}}}}
+     //editor.drawflow = {"drawflow":{"Home":{"data":{"1":{"id":1,"name":"welcome","data":{},"class":"welcome","html":"\n    <div>\n      <div class=\"title-box\">👏 Welcome!!</div>\n      <div class=\"box\">\n        <p>Simple flow library <b>demo</b>\n        <a href=\"https://github.com/jerosoler/Drawflow\" target=\"_blank\">Drawflow</a> by <b>Jero Soler</b></p><br>\n\n        <p>Multiple input / outputs<br>\n           Data sync nodes<br>\n           Import / export<br>\n           Modules support<br>\n           Simple use<br>\n           Type: Fixed or Edit<br>\n           Events: view console<br>\n           Pure Javascript<br>\n        </p>\n        <br>\n        <p><b><u>Shortkeys:</u></b></p>\n        <p>🎹 <b>Delete</b> for remove selected<br>\n        💠 Mouse Left Click == Move<br>\n        ❌ Mouse Right == Delete Option<br>\n        🔍 Ctrl + Wheel == Zoom<br>\n        📱 Mobile support<br>\n        ...</p>\n      </div>\n    </div>\n    ","typenode": false, "inputs":{},"outputs":{},"pos_x":50,"pos_y":50},"2":{"id":2,"name":"slack","data":{},"class":"slack","html":"\n          <div>\n            <div class=\"title-box\"><i class=\"fab fa-slack\"></i> Slack chat message</div>\n          </div>\n          ","typenode": false, "inputs":{"input_1":{"connections":[{"node":"7","input":"output_1"}]}},"outputs":{},"pos_x":1028,"pos_y":87},"3":{"id":3,"name":"telegram","data":{"channel":"channel_2"},"class":"telegram","html":"\n          <div>\n            <div class=\"title-box\"><i class=\"fab fa-telegram-plane\"></i> Telegram bot</div>\n            <div class=\"box\">\n              <p>Send to telegram</p>\n              <p>select channel</p>\n              <select df-channel>\n                <option value=\"channel_1\">Channel 1</option>\n                <option value=\"channel_2\">Channel 2</option>\n                <option value=\"channel_3\">Channel 3</option>\n                <option value=\"channel_4\">Channel 4</option>\n              </select>\n            </div>\n          </div>\n          ","typenode": false, "inputs":{"input_1":{"connections":[{"node":"7","input":"output_1"}]}},"outputs":{},"pos_x":1032,"pos_y":184},"4":{"id":4,"name":"email","data":{},"class":"email","html":"\n            <div>\n              <div class=\"title-box\"><i class=\"fas fa-at\"></i> Send Email </div>\n            </div>\n            ","typenode": false, "inputs":{"input_1":{"connections":[{"node":"5","input":"output_1"}]}},"outputs":{},"pos_x":1033,"pos_y":439},"5":{"id":5,"name":"template","data":{"template":"Write your template"},"class":"template","html":"\n            <div>\n              <div class=\"title-box\"><i class=\"fas fa-code\"></i> Template</div>\n              <div class=\"box\">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ","typenode": false, "inputs":{"input_1":{"connections":[{"node":"6","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"4","output":"input_1"},{"node":"11","output":"input_1"}]}},"pos_x":607,"pos_y":304},"6":{"id":6,"name":"github","data":{"name":"https://github.com/jerosoler/Drawflow"},"class":"github","html":"\n          <div>\n            <div class=\"title-box\"><i class=\"fab fa-github \"></i> Github Stars</div>\n            <div class=\"box\">\n              <p>Enter repository url</p>\n            <input type=\"text\" df-name>\n            </div>\n          </div>\n          ","typenode": false, "inputs":{},"outputs":{"output_1":{"connections":[{"node":"5","output":"input_1"}]}},"pos_x":341,"pos_y":191},"7":{"id":7,"name":"facebook","data":{},"class":"facebook","html":"\n        <div>\n          <div class=\"title-box\"><i class=\"fab fa-facebook\"></i> Facebook Message</div>\n        </div>\n        ","typenode": false, "inputs":{},"outputs":{"output_1":{"connections":[{"node":"2","output":"input_1"},{"node":"3","output":"input_1"},{"node":"11","output":"input_1"}]}},"pos_x":347,"pos_y":87},"11":{"id":11,"name":"log","data":{},"class":"log","html":"\n            <div>\n              <div class=\"title-box\"><i class=\"fas fa-file-signature\"></i> Save log file </div>\n            </div>\n            ","typenode": false, "inputs":{"input_1":{"connections":[{"node":"5","input":"output_1"},{"node":"7","input":"output_1"}]}},"outputs":{},"pos_x":1031,"pos_y":363}}},"Other":{"data":{"8":{"id":8,"name":"personalized","data":{},"class":"personalized","html":"\n            <div>\n              Personalized\n            </div>\n            ","typenode": false, "inputs":{"input_1":{"connections":[{"node":"12","input":"output_1"},{"node":"12","input":"output_2"},{"node":"12","input":"output_3"},{"node":"12","input":"output_4"}]}},"outputs":{"output_1":{"connections":[{"node":"9","output":"input_1"}]}},"pos_x":764,"pos_y":227},"9":{"id":9,"name":"dbclick","data":{"name":"Hello World!!"},"class":"dbclick","html":"\n            <div>\n            <div class=\"title-box\"><i class=\"fas fa-mouse\"></i> Db Click</div>\n              <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n                Db Click here\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                    Change your variable {name} !\n                    <input type=\"text\" df-name>\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ","typenode": false, "inputs":{"input_1":{"connections":[{"node":"8","input":"output_1"}]}},"outputs":{"output_1":{"connections":[{"node":"12","output":"input_2"}]}},"pos_x":209,"pos_y":38},"12":{"id":12,"name":"multiple","data":{},"class":"multiple","html":"\n            <div>\n              <div class=\"box\">\n                Multiple!\n              </div>\n            </div>\n            ","typenode": false, "inputs":{"input_1":{"connections":[]},"input_2":{"connections":[{"node":"9","input":"output_1"}]},"input_3":{"connections":[]}},"outputs":{"output_1":{"connections":[{"node":"8","output":"input_1"}]},"output_2":{"connections":[{"node":"8","output":"input_1"}]},"output_3":{"connections":[{"node":"8","output":"input_1"}]},"output_4":{"connections":[{"node":"8","output":"input_1"}]}},"pos_x":179,"pos_y":272}}}}}
+     editor.start();
+ 
+ 
+ 
+     /*
+       var welcome = `
+       <div>
+         <div class="title-box">👏 Welcome!!</div>
+         <div class="box">
+           <p>Simple flow library <b>demo</b>
+           <a href="https://github.com/jerosoler/Drawflow" target="_blank">Drawflow</a> by <b>Jero Soler</b></p><br>
+ 
+           <p>Multiple input / outputs<br>
+              Data sync nodes<br>
+              Import / export<br>
+              Modules support<br>
+              Simple use<br>
+              Type: Fixed or Edit<br>
+              Events: view console<br>
+              Pure Javascript<br>
+           </p>
+           <br>
+           <p><b><u>Shortkeys:</u></b></p>
+           <p>🎹 <b>Delete</b> for remove selected<br>
+           💠 Mouse Left Click == Move<br>
+           ❌ Mouse Right == Delete Option<br>
+           🔍 Ctrl + Wheel == Zoom<br>
+           📱 Mobile support<br>
+           ...</p>
+         </div>
+       </div>
+       `;
+   */
+ 
+ 
+     //editor.addNode(name, inputs, outputs, posx, posy, class, data, html);
+     /*editor.addNode('welcome', 0, 0, 50, 50, 'welcome', {}, welcome );
+     editor.addModule('Other');
+     */
+ 
+      
+ 
+     const deepCopyFunction = (inObject) => {
+       let outObject, value, key
+ 
+       if (typeof inObject !== "object" || inObject === null) {
+       return inObject // Return the value if inObject is not an object
+       }
+ 
+      // Create an array or object to hold the values
+       outObject = Array.isArray(inObject) ? [] : {}
+ 
+       for (key in inObject) {
+       value = inObject[key]
+ 
+       // Recursively (deep) copy for nested objects, including arrays
+       outObject[key] = deepCopyFunction(value)
+       }
+ 
+     return outObject
+     }
+     // Events!
+     var createdNodeId;
+     editor.on('nodeCreated', function (id) {
+       console.log("Node created " + id);
+       createdNodeId = id
+       let childNodes = document.getElementById("node"+ "-" + id).childNodes
+       console.log('childNodes' ,childNodes[1].children[0].children[0])
+       childNodes[1].children[0].children[0].innerText = "Node "+id
+ 
+       
+     })
+ 
+     editor.on('nodeRemoved', function (id) {
+       console.log("Node removed " + id);
+       selectedNodeIds.splice(selectedNodeIds.indexOf(id), 1)
+ 
+     })
+ 
+     var selectedNodeId;
+     editor.on('nodeSelected', function (id) {
+       console.log("nodeSelected", id)
+       selectedNodeId = id;
+                
+     })
+ 
+    
+     editor.on('nodeUnselected', function (id) {
+       console.log("Node Unselected " + id);
+       
+       
+     })
+ 
+     editor.on('moduleCreated', function (name) {
+       console.log("Module Created " + name);
+     })
+ 
+     editor.on('moduleChanged', function (name) {
+       console.log("Module Changed " + name);
+     })
+ 
+     var connectionsState = [];
+     editor.on('connectionCreated', function (connection) {
+       console.log('Connection created');
+       console.log(connection);
+       connectionsState.push(connection);
+       console.log('connectionsState' ,connectionsState)
+     })
+ 
+     editor.on('connectionRemoved', function (connection) {
+       console.log('Connection removed');
+       console.log(connection);
+       connectionsState.splice(connectionsState.indexOf(connection),1);
+     })
+ 
+     // editor.on('mouseMove', function (position) {
+     //   console.log('Position mouse x:' + position.x + ' y:' + position.y);
+     // })
+ 
+     editor.on('nodeMoved', function (id) {
+       console.log("Node moved " + id);
+     })
+ 
+     editor.on('zoom', function (zoom) {
+       console.log('Zoom level ' + zoom);
+     })
+ 
+     
+     editor.on('translate', function (position) {
+       console.log('Translate x:' + position.x + ' y:' + position.y);
+       
+     
+     })
+ 
+     editor.on('addReroute', function (id) {
+       console.log("Reroute added " + id);
+     })
+ 
+     editor.on('removeReroute', function (id) {
+       console.log("Reroute removed " + id);
+     })
+ 
+ 
+     var output_arr;
+     var input_arr ;
+     var selectedNodeIds = [];
+     var pastedNodeIds = [];
+     editor.on('keydown', function(e) {
+      
+       var nodeObjArr = [];
+       console.log("on keydown", typeof(selectedNodeIds[i]))
+       for (var i = 0;  i< selectedNodeIds.length;i++) {
+         var nodeObj = editor.getNodeFromId(selectedNodeIds[i]);
+         
+         nodeObjArr[i] = nodeObj
+       }
+       var dataArr = [];
+       for (var i = 0;  i< nodeObjArr.length;i++) {
+         var data = deepCopyFunction(nodeObjArr[i].data)
+         dataArr[ i ] = data;
+       }
+ 
+      
+       var pos_x_arr = []
+       for (var i = 0;  i< nodeObjArr.length;i++) {
+         var pos_x = nodeObjArr[i].pos_x
+         pos_x_arr[i] = pos_x
+       }
+ 
+       var pos_y_arr = []
+       for (var i = 0;  i< nodeObjArr.length;i++) {
+         var pos_y = nodeObjArr[i].pos_y
+         pos_y_arr[i] = pos_y
+       }
+ 
+       var name_arr = []
+       for (var i = 0;  i< nodeObjArr.length;i++) {
+         var name = nodeObjArr[i].name
+         name_arr[i] = name
+       }
+ 
+       for (let i = 0; i < nodeObjArr.length; i++) {
+         var input = deepCopyFunction(nodeObjArr[i].inputs.input_1); 
+         input_arr = input
+       }
+ 
+      
+       for (let i = 0; i < nodeObjArr.length; i++) {
+         var output = deepCopyFunction(nodeObjArr[i].outputs.output_1); 
+         output_arr = output
+       }     
+       
+     
+       if(e.ctrlKey) { //d
+       switch(e.keyCode){
+         case 67 : 
+ 
+               break;
+         case 86 : 
+         pastedNodeIds = []
+         for (var i = 0; i< nodeObjArr.length;i++){
+                 console.log('in paste loop')
+                 
+                 var inputs = Object.keys(nodeObjArr[i].inputs).length
+                 var outputs = Object.keys(nodeObjArr[i].outputs).length
+                 // addNodeToDrawFlow(name_arr[i],pos_x_arr[i] + 50, pos_y_arr[i]+ 25, dataArr[i])
+                 editor.addNode(name_arr[i], inputs,outputs, pos_x_arr[i], pos_y_arr[i], name_arr[i], dataArr[i], nodeObjArr[i].html);
+                 pastedNodeIds.push(createdNodeId)
+                 
+         }
+         console.log("pastedNodeIds", pastedNodeIds)
+         createConnections();
+         break;
+       }
+     }
+     
+     })
+ 
+    
+ 
+     //import Logic
+     var file_data;
+     function onChange(event) {
+         console.log('in chamge');
+         var reader = new FileReader();
+         reader.onload = onReaderLoad;
+         reader.readAsText(event.target.files[0]);
+       }
+ 
+     function onReaderLoad(event){
+         console.log(event.target.result);
+         var obj = JSON.parse(event.target.result);
+         console.log("type" ,typeof(obj))
+         file_data = obj;
+       }
+       
+       document.getElementById('file-selector').addEventListener('change', onChange)
+ 
+       
+  
+ 
+     /* DRAG EVENT */
+ 
+     /* Mouse and Touch Actions */
+ 
+     var elements = document.getElementsByClassName('drag-drawflow');
+     for (var i = 0; i < elements.length; i++) {
+       elements[i].addEventListener('touchend', drop, false);
+       elements[i].addEventListener('touchmove', positionMobile, false);
+       elements[i].addEventListener('touchstart', drag, false);
+     }
+ 
+     var mobile_item_selec = '';
+     var mobile_last_move = null;
+ 
+     function  createConnections() {
+       console.log("in createConnections pastedNodeIds",pastedNodeIds);
+       // console.log('in createConnections selectedNodeIds' , selectedNodeIds)
+       console.log("connectionsState[i].input_id" ,connectionsState)
+       for (var i =0; i< selectedNodeIds.length; i++)
+       {
+         console.log("ith for loop")
+         for (var j = 0; j < connectionsState.length; j++) {
+           console.log("jth for loop")
+           if (selectedNodeIds[i] == connectionsState[j].input_id)
+           {
+             console.log("selectedNodeIds has an input" , selectedNodeIds[i])
+             console.log(selectedNodeIds.includes(connectionsState[j].output_id));
+             console.log("in createConnection selectedNodeIds" , selectedNodeIds)
+             if ( selectedNodeIds.includes(connectionsState[j].output_id)){
+               console.log("output_id" ,pastedNodeIds[selectedNodeIds.indexOf(connectionsState[j].output_id)])
+               editor.addConnection(pastedNodeIds[selectedNodeIds.indexOf(connectionsState[j].output_id)], pastedNodeIds[i], connectionsState[j].output_class, connectionsState[j].input_class);
+             }
+         }
+         }
+       }
+ 
+ 
+       
+ 
+     }
+ 
+     function importdata(obj){
+     console.log("in importData")
+      editor.import(file_data);
+       
+     
+    
+ 
+     }
+ 
+     function exportdata() {
+       var exportElement = editor.export();
+       var data = {}
+       var inputs = {}
+       var outputs = {}
+       console.log("exportdata",exportElement)
+       // var elementData = exportElement.drawflow.Home.data;
+       // console.log('data', Object.keys(elementData).length)
+       // for (var i = 1; i<=Object.keys(elementData).length; i++){
+       //   data = elementData[i].data
+       //   console.log(data)
+       //   inputs = elementData[i].inputs
+       //   console.log(inputs)
+       //   outputs = elementData[i].outputs
+       //   console.log(outputs)
+       // }
+       
+       // var exportMaterial = [...data, ...inputs, ...outputs]
+       // console.log("download started", exportMaterial)
+       download(JSON.stringify(exportElement),"configuratorProject_1", 'application/json')
+       
+       console.log("download finished")
+ 
+     }
+ 
+    
+ 
+     function download(data, filename, type) {
+     var file = new Blob([data], {type: type});
+     if (window.navigator.msSaveOrOpenBlob) // IE10+
+         window.navigator.msSaveOrOpenBlob(file, filename);
+     else { // Others
+         var a = document.createElement("a"),
+                 url = URL.createObjectURL(file);
+         a.href = url;
+         a.download = filename;
+         document.body.appendChild(a);
+         a.click();
+         setTimeout(function() {
+             document.body.removeChild(a);
+             window.URL.revokeObjectURL(url);
+         }, 0);
+     }
+ }
+ 
+     function positionMobile(ev) {
+       mobile_last_move = ev;
+     }
+ 
+     function allowDrop(ev) {
+       ev.preventDefault();
+     }
+ 
+     function drag(ev) {
+       if (ev.type === "touchstart") {
+         mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
+       } else {
+         ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
+       }
+     }
+ 
+     function drop(ev) {
+       if (ev.type === "touchend") {
+         var parentdrawflow = document.elementFromPoint(mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
+         if (parentdrawflow != null) {
+           addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
+         }
+         mobile_item_selec = '';
+       } else {
+         ev.preventDefault();
+         var data = ev.dataTransfer.getData("node");
+         addNodeToDrawFlow(data, ev.clientX, ev.clientY);
+         console.log("Node data", data);
+       }
+ 
+     }
+ 
+     function toggleClick(e) {
+       console.log("toggle click" , e)  
+       var parent = e.target.parentElement.parentElement.parentElement;
+       var id = parent.getAttribute('id')
+       var idNum = id.substr(5);
+       console.log('idNum', idNum)
+       if(!selectedNodeIds.includes(idNum)){
+         selectedNodeIds.push(idNum)
+         document.getElementById(id).style.border = " 5px solid #4ea9ff"
+       }
+       else{
+         selectedNodeIds.splice(selectedNodeIds.indexOf(idNum), 1)
+         document.getElementById(id).style.border = "white"
+       }
+       console.log("selectedNodeIds" , selectedNodeIds);
+ 
+ 
+ 
+     }
+ 
+ 
+     function clearHandler() {
+       selectedNodeIds = []
+       pastedNodeIds = []
+       connectionsState = []
+     }
+ 
+     
+    
+ 
+ 
+ 
+     function addNodeToDrawFlow(name, pos_x, pos_y) {
+       console.log(editor.editor_mode)
+       if (editor.editor_mode === 'fixed') {
+         return false;
+       }
+       pos_x = pos_x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)) - (editor.precanvas.getBoundingClientRect().x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)));
+       pos_y = pos_y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)) - (editor.precanvas.getBoundingClientRect().y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)));
+       
+ 
+       
+       switch (name) {
+         case 'organization':
+           var organization = `
+           <div onclick="toggleClick(event)">
+             
+             <div id="nodeheader1" class="title-box-node"></div>
+             
+             <div class="box dbclickbox" ondblclick="showpopup(event)">
+                Organization
+                 <div class="modal" style="display:none">
+                   <div class="modal-content">
+                     
+                     <span class="close" onclick="closemodal(event)">&times;</span>
+                     <div id="modalheader1" class="title-box"> Organization </div>
+                     <form id="modalForm" class="box" >
+ 
+                         <label for="name">Name:</label>
+                         <input type="text" id="name" name="name" df-name><br>
+                         <label for="description">Description:</label>
+                         <input type="text" id="description" name="description" df-description> <br>
+                         <input type="button" name="button" value="SAVE" onclick="closemodal(event);  changeHeader()"">
+                       </form>
+ 
+                     
+                   </div>
+                 </div>
+                 </div>
+ 
+             </div>
+         `;
+           editor.addNode('organization', 0, 1, pos_x, pos_y, 'organization', {"name": '', "description": ''}, organization);
+           break;
+         case 'business_unit':
+         var business_unit = `
+           <div  onclick="toggleClick(event)">
+             <div id="nodeheader2" class="title-box-node" ondblclick="showpopup(event)"></div>
+             <div class="box dbclickbox" ondblclick="showpopup(event)">
+               Business Unit
+                 <div class="modal" style="display:none">
+                   <div class="modal-content">
+                     <span class="close" onclick="closemodal(event)">&times;</span>
+                       <div id="nodeheader2" class="title-box"> Business Unit </div>
+                       <form id="modalForm" class="box">
+                         <label for="name">Name:</label>
+                         <input type="text" id="name" name="name" df-name> <br>
+                         <label for="region">Region:</label>
+                         <input type="text" id="region" name="region" df-region><br>
+                         <input type="button" name="button" value="SAVE" onclick="closemodal(event); changeHeader()">
+                       </form>
+ 
+                   </div>
+ 
+                 </div>
+               </div>
+             </div>
+             `
+           editor.addNode('business_unit', 1, 1, pos_x, pos_y, 'business_unit', {"name": '', "region":''}, business_unit);
+           break;
+         case 'plant':
+         var plant = `
+           <div  onclick="toggleClick(event)">
+             <div id="nodeheader3" class="title-box-node" ondblclick="showpopup(event)">  </div>
+             <div class="box dbclickbox" ondblclick="showpopup(event)">
+                Plant
+                 <div class="modal" style="display:none">
+                   <div class="modal-content">
+                     <span class="close" onclick="closemodal(event)">&times;</span>
+                       <div id="modalheader3" class="title-box"> Plant </div>
+                       <form id="modalForm" class="box">
+                         <label for="name">Name:</label>
+                         <input type="text" id="name" name="name" df-name><br>
+                         <label for="capacity">Capacity:</label>
+                         <input type="number" id="capacity" name="capacity" df-capacity><br>
+                         <label for="count">Head Count:</label>
+                         <input type="number" id="count" name="count" df-headcount><br>
+                         <input type="button" name="button" value="SAVE" onclick="closemodal(event); changeHeader()">
+                       </form>
+ 
+                   </div>
+ 
+                 </div>
+               </div>
+             </div>
+             `
+           editor.addNode('plant', 1, 1, pos_x, pos_y, 'plant', { "name": '', "capacity": '' , 'headcount': ''}, plant);
+           break;
+         case 'line':
+         var line = `
+           <div  onclick="toggleClick(event)">
+             <div id="nodeheader4" class="title-box-node">  </div>
+               <div class="box" ondblclick="showpopup(event)">
+                 Line
+                 <div class="modal" style="display:none">
+                   <div class="modal-content">
+                     <span class="close" onclick="closemodal(event)">&times;</span>
+                       <div id="modalheader4" class="title-box"> Line </div>
+                       <form id="modalForm" class="box">
+                         <label for="name">Name:</label>
+                         <input type="text" id="name" name="name" df-name ><br>
+                         <label for="capacity">Capacity:</label>
+                         <input type="number" id="capacity" name="capacity" df-capacity><br>
+                         <label for="shift">Shift Details:</label>
+                         <input type="number" id="shift" name="shift" df-shift><br>
+                         <input type="button" name="button" value="SAVE" onclick="closemodal(event); changeHeader();">
+                       </form>
+ 
+ 
+                   </div>
+                 </div>
+               </div>
+             </div>
+             `
+           editor.addNode('line', 1, 1, pos_x, pos_y, 'line', { "name": '', "capacity" : '', "shift" : '' }, line);
+           break;
+         case 'machine':
+         var machine = `
+           <div  onclick="toggleClick(event)">
+             <div id="nodeheader5" class="title-box-node" >  </div>
+             <div class="box dbclickbox" ondblclick="showpopup(event)">
+                Machine
+                 <div class="modal" style="display:none">
+                   <div class="modal-content">
+                     <span class="close" onclick="closemodal(event)">&times;</span>
+                       <div id="modalheader5" class="title-box"> Machine </div>
+                       <form id="modalForm" class="box">
+                         <label for="name">Machine Name:</label><br>
+                         <input type="text" id="name" name="name" df-name><br>
+ 
+                         <label for="capacity">Machine Designed Capacity:</label>
+                         <input type="number" id="capacity" name="capacity" df-capacity><br>
+ 
+                         <label for="state">Machine state:</label>
+                         <input type="text" id="state" name="state" df-state><br>
+ 
+                         <label for="ip_address">Machine IP Address:</label>
+                         <input type="text" id="ip_address" name="ip_address" df-ipaddress><br>
+ 
+                         <label for="make">Machine Make:</label>
+                         <input type="text" id="make" name="make" df-make><br>
+ 
+                         <label for="model">Machine Model:</label>
+                         <input type="text" id="model" name="model" df-model><br>
+ 
+                         <label for="type">Machine Type:</label>
+                         <input type="text" id="type" name="type" df-type><br>
+ 
+                         <label for="protocol">Protocol used and supported by machine:</label>
+                         <input type="text" id="protocol" name="protocol" df-protocol><br>
+ 
+                         <label for="newtowrk">Network available to the machine:</label>
+                         <input type="text" id="network" name="newtwork" df-network><br>
+ 
+                         <input type="button" name="button" value="SAVE" onclick="closemodal(event); changeHeader();">
+ 
+                       </form>
+ 
+                   </div>
+ 
+                 </div>
+               </div>
+             </div>
+             `
+           editor.addNode('machine', 1, 0, pos_x, pos_y, 'machine', { "name": '',
+             "capacity" : '',
+             "state" : '',
+             "totalcount" : '',
+             "goodcount" : '',
+             "scrapcount" : '',
+             "ipaddress" : '',
+             "make" : '',
+             "model" : '',
+             "type" : '',
+             "protocol" : '',
+             "network" : ''
+             },
+             machine);
+           break;
+ 
+           //these cases are not being used.
+ 
+         case 'log':
+           var log = `
+             <div>
+               <div class="title-box"><i class="fas fa-file-signature"></i> Save log file </div>
+             </div>
+             `;
+           editor.addNode('log', 1, 0, pos_x, pos_y, 'log', {}, log);
+           break;
+         case 'google':
+           var google = `
+             <div>
+               <div class="title-box"><i class="fab fa-google-drive"></i> Google Drive save </div>
+             </div>
+             `;
+           editor.addNode('google', 1, 0, pos_x, pos_y, 'google', {}, google);
+           break;
+         case 'email':
+           var email = `
+             <div>
+               <div class="title-box"><i class="fas fa-at"></i> Send Email </div>
+             </div>
+             `;
+           editor.addNode('email', 1, 0, pos_x, pos_y, 'email', {}, email);
+           break;
+ 
+         case 'template':
+           var template = `
+             <div>
+               <div class="title-box"><i class="fas fa-code"></i> Template</div>
+               <div class="box">
+                 Ger Vars
+                 <textarea df-template></textarea>
+                 Output template with vars
+               </div>
+             </div>
+             `;
+           editor.addNode('template', 1, 1, pos_x, pos_y, 'template', { "template": 'Write your template' }, template);
+           break;
+         case 'multiple':
+           var multiple = `
+             <div>
+               <div class="box">
+                 Multiple!
+               </div>
+             </div>
+             `;
+           editor.addNode('multiple', 3, 4, pos_x, pos_y, 'multiple', {}, multiple);
+           break;
+         case 'personalized':
+           var personalized = `
+             <div>
+               Personalized
+             </div>
+             `;
+           editor.addNode('personalized', 1, 1, pos_x, pos_y, 'personalized', {}, personalized);
+           break;
+         case 'dbclick':
+           var dbclick = `
+ 
+             `;
+           editor.addNode('dbclick', 1, 1, pos_x, pos_y, 'dbclick', { name: '' }, dbclick);
+           break;
+ 
+         default:
+       }
+     }
+ 
+     var transform = '';
+     function showpopup(e) {
+       console.log("dlclick event handler")
+       //console.log(e.target.value)
+       e.target.closest(".drawflow-node").style.zIndex = "9999";
+       console.log('event target children' , e.target.children)
+       e.target.children[0].style.display = "block";
+ 
+       //document.getElementById("modalfix").style.display = "block";
+ 
+       //e.target.children[0].style.transform = 'translate('+translate.x+'px, '+translate.y+'px)';
+       transform = editor.precanvas.style.transform;
+       editor.precanvas.style.transform = '';
+       editor.precanvas.style.left = editor.canvas_x + 'px';
+       editor.precanvas.style.top = editor.canvas_y + 'px';
+       console.log(transform);
+ 
+       //e.target.children[0].style.top  =  -editor.canvas_y - editor.container.offsetTop +'px';
+       //e.target.children[0].style.left  =  -editor.canvas_x  - editor.container.offsetLeft +'px';
+       editor.editor_mode = "fixed";
+ 
+     }
+ 
+     function closemodal(e) {
+       e.target.closest(".drawflow-node").style.zIndex = "2";
+       console.log("closemodal" , e.target.parentElement.parentElement  )
+       e.target.parentElement.parentElement.style.display = "none";
+       //document.getElementById("modalfix").style.display = "none";
+       editor.precanvas.style.transform = transform;
+       editor.precanvas.style.left = '0px';
+       editor.precanvas.style.top = '0px';
+       editor.editor_mode = "edit";
+ 
+ 
+     }
+ 
+     
+      function changeHeader(){
+         //childNodes of node dropped on canvas
+       let childNodes = document.getElementById("node"+ "-" + selectedNodeId).childNodes
+       //childNodes of html element passed in addNode
+       console.log("childNodes" , childNodes)
+       // let drawflow_childNodes = document.getElementsByClassName()
+       console.log("childNodes value" , childNodes[1].children[0].children[1].children[0])
+       var text = childNodes[1].children[0].children[1].children[0].children[0].children[2][0].value;
+       childNodes[1].children[0].firstElementChild.innerText = text;
+       
+       let modal = childNodes[1].children[0].children[1].children[0];
+       document.getElementById("node"+ "-" + selectedNodeId).style.zIndex = "2";
+       modal.style.display = "none";
+       editor.precanvas.style.transform = transform;
+       editor.precanvas.style.left = '0px';
+       editor.precanvas.style.top = '0px';
+       
+       editor.editor_mode = 'edit';
+ 
+       
+      }
+ 
+     function changeModule(event) {
+       var all = document.querySelectorAll(".menu ul li");
+       for (var i = 0; i < all.length; i++) {
+         all[i].classList.remove('selected');
+       }
+       event.target.classList.add('selected');
+     }
+ 
+     function changeMode(option) {
+ 
+       //console.log(lock.id);
+       if (option == 'lock') {
+         lock.style.display = 'none';
+         unlock.style.display = 'block';
+       } else {
+         lock.style.display = 'block';
+         unlock.style.display = 'none';
+       }
+ 
+     
+ }
+
+    </script>
+    
     <div id="root"></div>
+      
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
